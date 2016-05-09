@@ -3,7 +3,10 @@ DESCRIPTION = "Example OpenGL ES2 demo using GBM and DRM(KMS) modesetting."
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=6399aca264cba2dc4c3a68d5904ffd33"
 
-SRC_URI = "git://github.com/ds-hwang/gbm_es2_demo.git;protocol=git"
+SRC_URI = "\
+		git://github.com/ds-hwang/gbm_es2_demo.git;protocol=git \
+		file://gbm_es2_demo.sh \
+		"
 SRCREV="beeca04ecd9e7004fecc9f07c9de0a34c0b01405"
 SRC_URI[md5sum] = "d44e4db53258f3fd811050865d34e3a9"
 
@@ -22,5 +25,11 @@ do_compile() {
 do_install() {
     install -d ${D}${bindir}
     install -m 0755 ${S}/run/gbm_es2_demo ${D}${bindir}/gbm_es2_demo
-    install -m 0755 ${S}/run/dma_buf_mmap_demo ${D}${bindir}/dma_buf_mmap_demo
+    install -m 0755 ${S}/run/dma_buf_mmap_demo ${D}${bindir}/
+
+    # run gbm_es2_demo after boot
+    install -d ${D}${sysconfdir}/init.d
+    install -d ${D}${sysconfdir}/rc3.d
+    install -m 0755 ${WORKDIR}/gbm_es2_demo.sh ${D}${sysconfdir}/init.d/
+    ln -sf ../init.d/gbm_es2_demo.sh ${D}${sysconfdir}/rc3.d/S100gbm_es2_demo.sh
 }
