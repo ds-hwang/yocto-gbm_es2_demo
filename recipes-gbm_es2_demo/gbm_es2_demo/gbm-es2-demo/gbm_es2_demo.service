@@ -1,0 +1,9 @@
+[Unit]
+Description=Embedded OpenGL ES2 demo based on DRM/KMS
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/gbm_es2_demo
+
+[Install]
+WantedBy=multi-user.target
